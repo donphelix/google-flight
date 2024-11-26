@@ -2,6 +2,7 @@ import {Box} from "@mui/material";
 import {useState} from "react";
 import ToggleTripType from "./ToggleTripType";
 import LocationSelector from "./LocationSelector";
+import DatePickers from "./DatePickers";
 
 const FlightSearchForm = () => {
     const [tripType, setTripType] = useState("round");
@@ -16,6 +17,7 @@ const FlightSearchForm = () => {
         }}>
             <ToggleTripType tripType={tripType} setTripType={setTripType}/>
             <LocationSelector />
+            <DatePickers tripType={tripType} />
 
         </Box>
     );
