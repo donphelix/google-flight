@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Box, CircularProgress, Typography} from "@mui/material";
+import {Box, Typography, CircularProgress, List, ListItem, ListItemText} from "@mui/material";
 import ToggleTripType from "./ToggleTripType";
 import LocationSelector from "./LocationSelector";
 import DatePickers from "./DatePickers";
@@ -14,9 +14,7 @@ const FlightSearchForm = () => {
     const [results, setResults] = useState([]);
     const [error, setError] = useState("");
 
-    // Handle search button click
     const handleSearch = async () => {
-        console.log("you clicked search button")
         if (!departure || !destination) {
             setError("Please provide both departure and destination locations.");
             return;
@@ -31,8 +29,8 @@ const FlightSearchForm = () => {
             const destinationResults = await searchAirports(destination);
 
             setResults([
-                {label: "Departure Airports", data: departureResults},
-                {label: "Destination Airports", data: destinationResults},
+                {label: "Departure Airports", data: departureResults.data},
+                {label: "Destination Airports", data: destinationResults.data},
             ]);
         } catch (err) {
             setError("Failed to fetch airport data. Please try again.");
@@ -54,12 +52,14 @@ const FlightSearchForm = () => {
         >
             {/* Existing Components */}
             <ToggleTripType tripType={tripType} setTripType={setTripType}/>
-            <LocationSelector
-                setDeparture={setDeparture}
-                setDestination={setDestination}
-            />
+            <LocationSelector setDeparture={setDeparture} setDestination={setDestination}/>
             <DatePickers tripType={tripType}/>
-            <CustomButton text={loading ? <CircularProgress size={24}/> : "Search"} onClick={handleSearch}/>
+
+            {/* Search Button */}
+            <CustomButton
+                text={loading ? <CircularProgress size={24}/> : "Search"}
+                onClick={handleSearch}
+            />
 
             {/* Error Message */}
             {error && (
@@ -72,16 +72,21 @@ const FlightSearchForm = () => {
             {results.length > 0 && (
                 <Box mt={4} width="100%">
                     {results.map((resultGroup, idx) => (
-                        <Box key={idx} mb={3}>
-                            <Typography variant="h6">{resultGroup.label}</Typography>
-                            {resultGroup.data.results && resultGroup.data.results.length > 0 ? (
-                                <ul>
-                                    {resultGroup.data.results.map((airport) => (
-                                        <li key={airport.id}>
-                                            {airport.name} - {airport.iataCode} ({airport.country})
-                                        </li>
+                        <Box key={idx} mb={4}>
+                            <Typography variant="h6" mb={2}>
+                                {resultGroup.label}
+                            </Typography>
+                            {resultGroup.data.length > 0 ? (
+                                <List>
+                                    {resultGroup.data.map((item, index) => (
+                                        <ListItem key={index} divider>
+                                            <ListItemText
+                                                primary={`${item.presentation.title} (${item.skyId})`}
+                                                secondary={`${item.presentation.subtitle} - ${item.navigation.localizedName}`}
+                                            />
+                                        </ListItem>
                                     ))}
-                                </ul>
+                                </List>
                             ) : (
                                 <Typography>No results found.</Typography>
                             )}
