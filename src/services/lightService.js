@@ -84,7 +84,7 @@ export const updateResource = async (id, payload) => {
 
 /**
  * Example: Delete a resource (DELETE).
- * Replace `/exampleEndpoint` with your API's endpoint.
+ * Replace `/delete-flight` with your API's endpoint.
  * @param {string} id - The ID of the resource to delete.
  * @returns {Promise<Object>} - Confirmation of deletion.
  */
