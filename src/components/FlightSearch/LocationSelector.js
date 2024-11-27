@@ -1,43 +1,28 @@
 import React from "react";
-import {Autocomplete, Box, TextField} from "@mui/material";
+import {Grid, TextField} from "@mui/material";
 
-const locations = ["Nairobi", "Kisumu", "Nanyuki", "Mombasa", "Eldoret"];
-
-const LocationSelector = () => {
+const LocationSelector = ({setDeparture, setDestination}) => {
     return (
-        <Box sx={{width: "100%"}}>
-            <Autocomplete
-                options={locations}
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label="Where from?"
-                        variant="outlined"
-                        InputLabelProps={{style: {color: "#aaa"}}}
-                        InputProps={{
-                            ...params.InputProps,
-                            style: {color: "white", backgroundColor: "#1e1e1e"},
-                        }}
-                    />
-                )}
-                sx={{marginBottom: "1rem"}}
-            />
-            <Autocomplete
-                options={locations}
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label="Where to?"
-                        variant="outlined"
-                        InputLabelProps={{style: {color: "#aaa"}}}
-                        InputProps={{
-                            ...params.InputProps,
-                            style: {color: "white", backgroundColor: "#1e1e1e"},
-                        }}
-                    />
-                )}
-            />
-        </Box>
+        <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+                <TextField
+                    fullWidth
+                    label="Where From?"
+                    variant="outlined"
+                    onChange={(e) => setDeparture(e.target.value)}
+                    required
+                />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                <TextField
+                    fullWidth
+                    label="Where To?"
+                    variant="outlined"
+                    onChange={(e) => setDestination(e.target.value)}
+                    required
+                />
+            </Grid>
+        </Grid>
     );
 };
 
